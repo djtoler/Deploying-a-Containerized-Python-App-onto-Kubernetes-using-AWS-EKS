@@ -1,0 +1,7 @@
+kubernetes_infrastructure_tf/.terraform
+kubernetes_infrastructure_tf/.terraform.lock.hcl
+kubernetes_infrastructure_tf/terraform.tfstate
+
+jenkins_architecture_tf/.terraform
+jenkins_architecture_tf/.terraform.lock.hcl
+jenkins_architecture_tf/terraform.tfstate

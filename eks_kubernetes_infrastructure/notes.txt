@@ -1,0 +1,30 @@
+PUT NODES IN SPECIFIC SUBNETS
+https://eksctl.io/usage/nodegroup-with-custom-subnet/
+eksctl create nodegroup --help
+
+eksctl create nodegroup --cluster cluster03 --name dp9backend1 --node-type t2.medium --nodes 2 --node-private-networking --subnet-ids subnet-02d86c9ea286e343b,subnet-02825fc3bf3076539 --node-labels "role=backend"
+--eksctl create nodegroup
+--cluster cluster03                                                 (specify the cluster to create the nodes in)
+--name dp9backend                                                   (name the new node group)
+--node-type t2.medium                                               (types of nodes/instances)
+--nodes 2                                                           (number of nodes)
+--node-private-networking                                           (put the nodes in a private network)
+--subnet-ids subnet-02d86c9ea286e343b,subnet-02825fc3bf3076539      (specify which subnets to put the nodes in)
+_______________________________________________________________________________________________________________________________________________________
+
+LABEL NODES TO REFERENCE IN SERVICE FILE 
+(YOU CAN USE THE LABEL IN YOUR MAIFESTS AND ONLY THE NODES WITH THAT LABEL WILL BE EFFECTED)
+kubectl get nodes [get a list of all the nodes you have and find the names of the nodes]
+kubectl label nodes NAMEOFNODE role=backend
+
+ATTACH APPLICATION IMAGE TO SPECIFIC NODES
+https://kubernetes.io/docs/tasks/configure-pod-container/assign-pods-nodes/
+
+CONNECT FRONTEND TO BACKEND
+https://kubernetes.io/docs/tasks/access-application-cluster/connecting-frontend-backend/
+
+REBUILD IMAGES WITHOUT AUTOMATIC CACHE
+docker build --no-cache -t djtoler/dp9frontend:latest .
+
+DELETE NODE GROUP
+eksctl delete nodegroup --cluster cluster03 --name dp9backend
