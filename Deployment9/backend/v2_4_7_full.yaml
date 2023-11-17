@@ -801,7 +801,7 @@ spec:
     spec:
       containers:
       - args:
-        - --cluster-name=your-cluster-name
+        - --cluster-name=cluster03
         - --ingress-class=alb
         image: public.ecr.aws/eks/aws-load-balancer-controller:v2.4.7
         livenessProbe:

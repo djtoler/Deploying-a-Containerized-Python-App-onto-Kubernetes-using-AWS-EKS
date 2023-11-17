@@ -16,7 +16,7 @@ pipeline {
 
         stage('BuildBackend') {
             steps {
-              dir('frontend') {
+              dir('backend') {
                 sh 'sudo docker build -t djtoler/dp9backend .'
               }
             }
@@ -31,15 +31,15 @@ pipeline {
         stage('PushFrontendDockerHub') {
             steps {
               dir('frontend') {
-                sh 'sudo docker push djtoler/fetest1dp8'
+                sh 'sudo docker push djtoler/dp9frontend'
               }
             }
         }
 
         stage('PushBackendDockerHub') {
             steps {
-              dir('frontend') {
-                sh 'sudo docker push djtoler/fetest1dp8'
+              dir('backend') {
+                sh 'sudo docker push djtoler/dp9backend'
               }
             }
         }
@@ -47,12 +47,12 @@ pipeline {
         stage('DeployBackend') {
             agent { label 'KubernetesAgent' }
             steps {
-              dir('frontend') {
+              dir('backend') {
                 withCredentials([
                     string(credentialsId: 'AWS_ACCESS_KEY', variable: 'aws_access_key'), 
                     string(credentialsId: 'AWS_SECRET_KEY', variable: 'aws_secret_key')
                 ]) {
-                    sh 'terraform init' 
+                    sh 'kubectl apply -f be_deployment.yaml && kubectl apply -f be_service.yaml' 
                 }
               }
             }
@@ -66,21 +66,7 @@ pipeline {
                     string(credentialsId: 'AWS_ACCESS_KEY', variable: 'aws_access_key'), 
                     string(credentialsId: 'AWS_SECRET_KEY', variable: 'aws_secret_key')
                 ]) {
-                    sh 'terraform plan -out=plan.tfplan -var="aws_access_key=$aws_access_key" -var="aws_secret_key=$aws_secret_key"' 
-                }
-              }
-            }
-        }
-        
-        stage('Apply') {
-            agent { label 'awsDeploy' }
-            steps {
-              dir('frontend') {
-                withCredentials([
-                    string(credentialsId: 'AWS_ACCESS_KEY', variable: 'aws_access_key'), 
-                    string(credentialsId: 'AWS_SECRET_KEY', variable: 'aws_secret_key')
-                ]) {
-                    sh 'terraform apply "plan.tfplan"' 
+                    sh 'kubectl apply -f fe_deployment.yaml && kubectl apply -f fe_service.yaml' 
                 }
               }
             }
