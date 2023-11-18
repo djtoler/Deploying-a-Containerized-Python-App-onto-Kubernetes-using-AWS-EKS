@@ -41,8 +41,9 @@ pipeline {
                 sh 'sudo docker build --no-cache -t djtoler/dp9backend .'
                 sh 'docker run -d -p 8000:8000 --name be_test djtoler/dp9backend'
                 sh 'IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=DP9_Docker_Instance" --query "Reservations[*].Instances[*].PublicIpAddress" --output text)'
-                sh 'echo "IP is ${IP}"'
-                sh 'curl -f http://${IP}:8000/api/products/'
+                sh 'export IP'
+                sh 'echo "IP is $IP"'
+                sh 'curl -f http://$IP:8000/api/products/'
                 sh 'docker stop be_test'
                 sh 'docker rm be_test'
               }
