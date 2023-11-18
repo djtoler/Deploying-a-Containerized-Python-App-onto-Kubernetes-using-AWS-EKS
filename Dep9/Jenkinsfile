@@ -33,7 +33,7 @@ pipeline {
 
         stage('BuildFrontend') {
             steps {
-              dir('frontend') {
+              dir('Dep9/frontend') {
                 sh 'pwd'
                 sh 'docker build --no-cache -t djtoler/dp9frontend .'
               }
@@ -62,7 +62,7 @@ pipeline {
 
         stage('BuildBackend') {
             steps {
-              dir('backend') {
+              dir('Dep9/backend') {
                 sh 'sudo docker build --no-cache -t djtoler/dp9backend .'
               }
             }
