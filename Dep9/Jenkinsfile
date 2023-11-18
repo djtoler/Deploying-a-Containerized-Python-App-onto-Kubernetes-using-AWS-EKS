@@ -38,7 +38,7 @@ pipeline {
             steps {
               dir('Dep9/backend') {
                 sh 'sudo docker build --no-cache -t djtoler/dp9backend .'
-                sh 'docker run -d -p 8000:8000 --name djtoler/dp9backend'
+                sh 'docker run -d -p 8000:8000 --name be_test djtoler/dp9backend'
                 sh 'curl -f http://localhost:8000'
                 sh 'docker stop djtoler/dp9backend'
                 sh 'docker rm djtoler/dp9backend'
