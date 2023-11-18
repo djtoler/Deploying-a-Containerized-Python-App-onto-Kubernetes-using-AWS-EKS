@@ -6,18 +6,59 @@ pipeline {
     
     stages {
 
+        stage('TestFrontend') {
+            steps {
+                sh '''#!/bin/bash
+                  IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=DP9_Kubernetes_Instance" --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
+                  git clone https://github.com/djtoler/Deployment9
+                  cd Deployment9/frontend
+                  npm install --save-dev @babel/plugin-proposal-private-property-in-object
+                  npm install
+                  nohup npm start &
+                  sleep 10
+                  response=$(curl -s -o /dev/null -w '%{http_code}' http://${IP}:3000)
+                  if [ "$response" -lt 200 ] || [ "$response" -gt 399 ]; then
+                      echo "HTTP Response Code: $response"
+                      npx kill-port 3000
+                      exit 1
+                  fi
+                  npx kill-port 3000
+              '''
+            }
+        }
+
         stage('BuildFrontend') {
             steps {
               dir('frontend') {
-                sh 'sudo docker build -t djtoler/dp9frontend .'
+                sh 'sudo docker build --no-cache -t djtoler/dp9frontend .'
               }
+            }
+        }
+
+        stage('TestBackend') {
+            steps {
+              sh '''#!/bin/bash
+               python3.9 -m venv test
+               source test/bin/activate
+               git clone https://github.com/djtoler/Deployment9
+               cd Deployment9/backend
+               pip install pip --upgrade
+               pip install -r requirements.tx
+               pip install pytest
+               py.test --verbose --junit-xml test-reports/results.xml
+              '''
+            }
+            post {
+                always {
+                    junit 'test-reports/*.xml'
+                }
             }
         }
 
         stage('BuildBackend') {
             steps {
               dir('backend') {
-                sh 'sudo docker build -t djtoler/dp9backend .'
+                sh 'sudo docker build --no-cache -t djtoler/dp9backend .'
               }
             }
         }
@@ -73,3 +114,4 @@ pipeline {
         }
     }
 }
+

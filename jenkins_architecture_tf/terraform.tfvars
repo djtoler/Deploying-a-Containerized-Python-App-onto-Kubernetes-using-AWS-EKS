@@ -21,9 +21,9 @@ ec2_instance_tag_1      = {Name = "DP9_Jenkins_Controller"}
 ec2_instance_tag_2      = {Name = "DP9_Terraform_Agent"}
 ec2_instance_tag_3      = {Name = "DP9_Docker_Instance"}
 ec2_instance_tag_4      = {Name = "DP9_Kubernetes_Instance"}
-ud_jenkins              = "ud_scripts/ud_jenkins.sh"
-ud_docker               = "ud_scripts/ud_docker.sh"
-key_name                = "dp6_kp"
+ud_jenkins              = "ud_jenkins.sh"
+ud_docker               = "ud_docker.sh"
+key_name                = "pubsubnetkey"
 
 #Ports
 ssh_access = {
