@@ -9,7 +9,8 @@ pipeline {
         stage('TestFrontend') {
             steps {
                 sh '''#!/bin/bash
-                  IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=DP9_Kubernetes_Instance" --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
+                  rm -rf Deployment9
+                  IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=DP9_Docker_Instance" --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
                   git clone https://github.com/djtoler/Deployment9
                   cd Dep9/frontend
                   npm install --save-dev @babel/plugin-proposal-private-property-in-object
