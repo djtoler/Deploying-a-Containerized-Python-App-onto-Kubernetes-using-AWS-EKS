@@ -9,7 +9,7 @@ Demonstrate your ability to work within a group to deploy an e-commerce applicat
 
 - Download the files from this repository and upload them to your newly created repository 
 
-- Be sure to follow the deployment instructions from this repository  
+- Be sure to follow the deployment instructions from this repository  ...
 
 - Document your progress in a .md file in your repository. Also, document any issues you may run into and what you did to fix them.
 
