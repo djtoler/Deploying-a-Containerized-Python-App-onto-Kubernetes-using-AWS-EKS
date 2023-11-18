@@ -5,7 +5,7 @@
 
 Demonstrate your ability to work within a group to deploy an e-commerce application to EKS.
 
-- Create a separate GitHub repository for this application 
+- Create a separate GitHub repository for this application ....
 
 - Download the files from this repository and upload them to your newly created repository 
 
