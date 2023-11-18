@@ -57,6 +57,10 @@ resource "aws_instance" "dp9_docker_agent_server" {
   associate_public_ip_address     = var.public_ip
   key_name                        = var.key_name
   iam_instance_profile            = var.instance_profile_name
+  root_block_device {
+    volume_size                   = 20 
+    delete_on_termination         = true
+  }
 }
 
 resource "aws_instance" "dp9_kubernetes_agent_server" {
