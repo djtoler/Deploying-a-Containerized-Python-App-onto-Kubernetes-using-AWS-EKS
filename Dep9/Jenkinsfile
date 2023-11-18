@@ -21,13 +21,6 @@ pipeline {
                   nohup npm start > frontend_start.txt &
                   sleep 30
                   grep "Compiled successfully!" frontend_start.txt
-                  // response=$(curl -s -o /dev/null -w '%{http_code}' http://${IP}:3000)
-                  // echo "Response: ${response}"
-                  // if [ "$response" -gt 399 ]; then
-                  //     echo "HTTP Response Code: $response"
-                  //     npx kill-port 3000
-                  //     exit 1
-                  // fi
               '''
             }
         }
