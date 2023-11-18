@@ -34,32 +34,14 @@ pipeline {
             }
         }
 
-        stage('TestBackend') {
-            steps {
-              sh '''#!/bin/bash
-               rm -rf Deployment9
-               echo "Removed Deployment 9 directory"
-               python3.9 -m venv test
-               source test/bin/activate
-               git clone https://github.com/djtoler/Deployment9
-               cd Dep9/backend
-               pip install pip --upgrade
-               pip install -r requirements.txt
-               pip install pytest
-               py.test --verbose --junit-xml test-reports/results.xml
-              '''
-            }
-            post {
-                always {
-                    junit 'test-reports/*.xml'
-                }
-            }
-        }
-
-        stage('BuildBackend') {
+        stage('BuildTestBackend') {
             steps {
               dir('Dep9/backend') {
                 sh 'sudo docker build --no-cache -t djtoler/dp9backend .'
+                sh 'docker run -d -p 8000:8000 --name djtoler/dp9backend'
+                sh 'curl -f http://localhost:8000'
+                sh 'docker stop djtoler/dp9backend'
+                sh 'docker rm djtoler/dp9backend'
               }
             }
         }
@@ -74,6 +56,7 @@ pipeline {
             steps {
               dir('Dep9/frontend') {
                 sh 'sudo docker push djtoler/dp9frontend'
+                sh 'docker rmi djtoler/dp9frontend:latest'
               }
             }
         }
@@ -82,6 +65,7 @@ pipeline {
             steps {
               dir('Dep9/backend') {
                 sh 'sudo docker push djtoler/dp9backend'
+                sh 'docker rmi djtoler/dp9backend:latest'
               }
             }
         }
