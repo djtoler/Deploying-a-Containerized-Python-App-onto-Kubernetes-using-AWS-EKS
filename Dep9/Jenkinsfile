@@ -11,20 +11,20 @@ pipeline {
             steps {
                 sh '''#!/bin/bash
                   rm -rf Deployment9
+                  npx kill-port 3000
                   IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=DP9_Docker_Instance" --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
                   git clone https://github.com/djtoler/Deployment9
                   cd Dep9/frontend
                   npm install --save-dev @babel/plugin-proposal-private-property-in-object
                   npm install
                   nohup npm start &
-                  sleep 10
+                  sleep 30
                   response=$(curl -s -o /dev/null -w '%{http_code}' http://${IP}:3000)
                   if [ "$response" -lt 200 ] || [ "$response" -gt 399 ]; then
                       echo "HTTP Response Code: $response"
                       npx kill-port 3000
                       exit 1
                   fi
-                  npx kill-port 3000
               '''
             }
         }
