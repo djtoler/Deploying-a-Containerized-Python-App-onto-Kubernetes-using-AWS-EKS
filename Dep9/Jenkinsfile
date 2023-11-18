@@ -37,12 +37,14 @@ pipeline {
         stage('TestBackend') {
             steps {
               sh '''#!/bin/bash
+               rm -rf Deployment9
+               echo "Removed Deployment 9 directory"
                python3.9 -m venv test
                source test/bin/activate
                git clone https://github.com/djtoler/Deployment9
                cd Dep9/backend
                pip install pip --upgrade
-               pip install -r requirements.tx
+               pip install -r requirements.txt
                pip install pytest
                py.test --verbose --junit-xml test-reports/results.xml
               '''
