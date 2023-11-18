@@ -35,7 +35,7 @@ pipeline {
             steps {
               dir('frontend') {
                 sh 'pwd'
-                sh 'sudo docker build --no-cache -t djtoler/dp9frontend .'
+                sh 'docker build --no-cache -t djtoler/dp9frontend .'
               }
             }
         }
