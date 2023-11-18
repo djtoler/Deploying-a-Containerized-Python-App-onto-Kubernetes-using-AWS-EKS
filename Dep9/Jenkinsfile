@@ -11,7 +11,7 @@ pipeline {
                 sh '''#!/bin/bash
                   IP=$(aws ec2 describe-instances --filters "Name=tag:Name,Values=DP9_Kubernetes_Instance" --query "Reservations[*].Instances[*].PublicIpAddress" --output text)
                   git clone https://github.com/djtoler/Deployment9
-                  cd Deployment9/frontend
+                  cd Dep9/frontend
                   npm install --save-dev @babel/plugin-proposal-private-property-in-object
                   npm install
                   nohup npm start &
@@ -41,7 +41,7 @@ pipeline {
                python3.9 -m venv test
                source test/bin/activate
                git clone https://github.com/djtoler/Deployment9
-               cd Deployment9/backend
+               cd Dep9/backend
                pip install pip --upgrade
                pip install -r requirements.tx
                pip install pytest
