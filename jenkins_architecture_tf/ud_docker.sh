@@ -22,4 +22,4 @@ chmod +x auto-aws_cli.sh
 
 curl -O https://raw.githubusercontent.com/djtoler/automated_installation_scripts/main/auto-docker_install.sh
 chmod +x auto-docker_install.sh
-./auto-docker_install.sh
+sudo ./auto-docker_install.sh
